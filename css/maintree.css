@@ -101,7 +101,7 @@ body{
 #treebox .node-form-data {
   background-color: darkorange;
   width: 80px;
-  display: inline-block; /*? or block */
+  display: inline-block;
   /* white-space: pre-line; */
   /* height: 20px; */
 }
@@ -111,10 +111,8 @@ body{
   color: white;
   width: 20px;
   display: inline-block;
-  /* vertical-align: top; */
   cursor: pointer;
 }
-
 
 img {
   height: auto;

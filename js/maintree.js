@@ -223,9 +223,10 @@ function createList(tree) {
         div_form.className = "node-form";
 
         let span_del = document.createElement('span');
-        span_del.className = "node-del";
-        span_del.innerHTML = "-";
-
+        if (node.parent !== null) {
+            span_del.className = "node-del";
+            span_del.innerHTML = "-";
+        }
         let div_data = document.createElement('div');
         div_data.className = "node-form-data";
         div_data.innerHTML = node.data;
@@ -257,6 +258,9 @@ function createList(tree) {
         // treeroot.innerHTML += liAdd;
 
     });
+
+    //? console.log(arrIDs(tree));
+    
 }
 
 //! создание обработчика для кнопки "+"
@@ -265,8 +269,19 @@ function buttonAdd(tree) {
 
     tree.walkBreadthFirst(function (node) {
 
-        let btn_add = document.querySelector("#\\3" + node.id + " > .node-form > .node-add");
+        let btn_add;
+        if (node.id < 10) {
+            btn_add = document.querySelector("#\\3" + node.id + " > .node-form > .node-add");
+        }
+        else if (node.id < 100) {
+            btn_add = document.querySelector("#\\3" + (node.id - node.id % 10) / 10 + "\\3" + node.id % 10 + " > .node-form > .node-add");
+        }
+        else {
+            btn_add = document.querySelector("#\\3" + (node.id - node.id % 100) / 100 + "\\3" + (node.id % 100 - node.id % 10) / 10 + "\\3" + node.id % 10 + " > .node-form > .node-add");
+        }
+
         let node_id = node.id;
+        
         btn_add.addEventListener("click", () => listAdd(tree, node_id));
 
     });
@@ -276,22 +291,24 @@ function listAdd(tree, node_id) {
 
     let new_data = prompt('what do you need?', 'eight');
 
-    tree.add(node_id, tree.walkBreadthFirst, searchId(arrIDs(tree)), new_data);
+    let new_id = searchId(arrIDs(tree));
+    tree.add(node_id, tree.walkBreadthFirst, new_id, new_data);
+    
 
     let treeroot;
     if (node_id < 10) {
         treeroot = document.querySelector("#\\3" + node_id + " > .parent");
     }
     else if (node_id < 100) {
-        treeroot = document.querySelector("#\\3" + (node_id - node_id%10)/10 + "\\3" + node_id%10 + " > .parent");
+        treeroot = document.querySelector("#\\3" + (node_id - node_id % 10)/10 + "\\3" + node_id % 10 + " > .parent");
     }
     else { 
-        treeroot = document.querySelector("#treebox");
+        treeroot = document.querySelector("#\\3" + (node_id - node_id % 100) / 100 + "\\3" + (node_id % 100 - node_id % 10) / 10 + "\\3" + node_id % 10 + " > .parent");
     }
-    //
+
     let li = document.createElement('li');
     li.className = "node";
-    li.id = searchId(arrIDs(tree));
+    li.id = new_id + 1;
     
     let div_form = document.createElement('div');
     div_form.className = "node-form";
@@ -330,87 +347,55 @@ function listAdd(tree, node_id) {
 
     //     treeroot.innerHTML += liAdd;
 
-    let new_id = searchId(arrIDs(tree));
-    span_add.addEventListener("click", () => listAdd(tree, new_id));
+    span_add.addEventListener("click", () => listAdd(tree, new_id + 1));
+    
+    span_del.addEventListener("click", () => listDel(tree, new_id + 1, node_id));
 
-    // span_del.addEventListener("click", () => listDel(tree, new_id));
+    //? console.log(arrIDs(tree));
 
 }
-
-//! END
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//? --------------------------------------------
-
 
 //! создание обработчика для кнопки "-"
 
-// function buttonDel(tree) {
+function buttonDel(tree) {
 
-//     tree.walkBreadthFirst(function (node) {
-
-//         let node_id = node.id;
-
-//         let parent_id;
-//         let arr = arrNODEs(tree);
-//         for (var i = 0; i < arr.length; i++) {
-//             console.log(arr[i].children.id);
-//             console.log(node_id);
-//             if (arr[i].children.id === node_id) {
-//                 console.log(arr[i].id);
-//             }
-//         } 
-
-       
-//         let btn_del = document.querySelector("#\\3" + node.id + " > .node-form > .node-del");
-//         btn_del.addEventListener("click", () => listDel(tree, node_id, parent_id));
-        
-//     });
-// }
-
-// function listDel(tree, node_id, parent_id) {
-    
-//     tree.remove(node_id, parent_id, tree.walkBreadthFirst);
-    
-// }
-
-//! массив всех карточек (🍌)
-
-function arrNODEs(tree) {
-    var arr =[];
     tree.walkBreadthFirst(function (node) {
-        arr.push(node.parent);
+        
+        if (node.parent !== null) {
+            let btn_del;
+            if (node.id < 10) {
+                btn_del = document.querySelector("#\\3" + node.id  + " > .node-form > .node-del");
+            }
+            else if (node.id < 100) {
+                btn_del = document.querySelector("#\\3" + (node.id - node.id % 10) / 10 + "\\3" + node.id % 10 + " > .node-form > .node-del");
+            }
+            else {
+                btn_del = document.querySelector("#\\3" + (node.id - node.id % 100) / 100 + "\\3" + (node.id % 100 - node.id % 10) / 10 + "\\3" + node.id % 10 + " > .node-form > .node-del");
+            }
+            btn_del.addEventListener("click", () => listDel(tree, node.id, node.parent.id));
+
+        }
     });
-    return arr;
 }
 
-function arrPI(tree) {
+function listDel(tree, node_id, parent_id) {
+    
+    tree.remove(node_id, parent_id, tree.walkBreadthFirst);
 
-    let myarr = arrNODEs(tree);
-    console.log(myarr)
-    let youarr = [];
-
-    for (let i = 0; i < myarr.length; i++) {
-        youarr[i] = myarr[i].id;
+    let liDel;
+    if (node_id < 10) {
+        liDel = document.querySelector("#\\3" + node_id);
     }
-    return youarr;
+    else if (node_id < 100) {
+        liDel = document.querySelector("#\\3" + (node_id - node_id % 10) / 10 + "\\3" + node_id % 10);
+    }
+    else {
+        liDel = document.querySelector("#\\3" + (node_id - node_id % 100) / 100 + "\\3" + (node_id % 100 - node_id % 10) / 10 + "\\3" + node_id % 10);
+    }
+    liDel.parentNode.removeChild(liDel);
+
+    //? console.log(arrIDs(tree));
+    
 }
+
+//! END

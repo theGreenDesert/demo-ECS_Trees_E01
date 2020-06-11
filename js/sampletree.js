@@ -100,15 +100,17 @@ createList(sample_tree);
 
 buttonAdd(sample_tree);
 
+buttonDel(sample_tree);
+
 //! END
 
 
 
-//? -------------------
 
-// buttonDel(sample_tree);
 
-console.log(arrPI(sample_tree));
+
+
+
 
 
 
@@ -130,9 +132,6 @@ console.log(arrPI(sample_tree));
 
 // console.log(element_form);
 // console.log(getCoords(element_form));
-
-
-
 
 
 

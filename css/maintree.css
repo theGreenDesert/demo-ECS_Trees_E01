@@ -38,7 +38,7 @@ body{
 
 .container{
   padding:10px;
-/*   min-width: 440px; */
+  min-width: 440px;
   display: inline-block;
 }
 

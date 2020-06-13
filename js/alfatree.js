@@ -15,4 +15,6 @@ buttonAdd(alfa_tree);
 
 buttonDel(alfa_tree);
 
+pointSvg(alfa_tree);
+
 //! END

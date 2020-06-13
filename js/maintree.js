@@ -260,7 +260,6 @@ function createList(tree) {
     });
 
     //? console.log(arrIDs(tree));
-    
 }
 
 //! создание обработчика для кнопки "+"
@@ -352,6 +351,7 @@ function listAdd(tree, node_id) {
     span_del.addEventListener("click", () => listDel(tree, new_id + 1, node_id));
 
     //? console.log(arrIDs(tree));
+    pointSvg(tree);
 
 }
 
@@ -395,7 +395,77 @@ function listDel(tree, node_id, parent_id) {
     liDel.parentNode.removeChild(liDel);
 
     //? console.log(arrIDs(tree));
+    pointSvg(tree);
     
+}
+
+//todo --------------------🍌------
+
+//! координаты "блокового" элемента
+
+function getCoords(element) {
+    var box = element.getBoundingClientRect();
+    return {
+        left: box.left + pageXOffset,
+        top: box.top + pageYOffset
+    };
+}
+
+//! рисование svg-точек и svg-линий
+
+function pointSvg(tree) {
+
+    let ECSTreesvg = document.querySelector("#ECSTreesvg");
+    ECSTreesvg.style.width = document.querySelector('.container').clientWidth + 'px';
+    ECSTreesvg.style.height = document.querySelector('.container').clientHeight + 'px';
+    let form_width = 50 + document.querySelector('.node-form-data').clientWidth;
+    let form_height = 15;
+    
+    ECSTreesvg.innerHTML = "";
+
+    tree.walkBreadthFirst(function (node) {
+
+        let element_form;
+        let form_xy;
+        let element_parent;
+        let parent_xy;
+
+        if (node.id < 10) {
+            element_form = document.querySelector("#\\3" + node.id + " > .node-form");
+        }
+        else if (node.id < 100) {
+            element_form = document.querySelector("#\\3" + (node.id - node.id % 10) / 10 + "\\3" + node.id % 10 + " > .node-form");
+        }
+        else {
+            element_form = document.querySelector("#\\3" + (node.id - node.id % 100) / 100 + "\\3" + (node.id % 100 - node.id % 10) / 10 + "\\3" + node.id % 10 + " > .node-form");
+        }
+        form_xy = getCoords(element_form);
+
+
+        if (node.parent !== null) {
+
+            if (node.parent.id < 10) {
+                element_parent = document.querySelector("#\\3" + node.parent.id + " > .node-form");
+            }
+            else if (node.parent.id < 100) {
+                element_parent = document.querySelector("#\\3" + (node.parent.id - node.parent.id % 10) / 10 + "\\3" + node.parent.id % 10 + " > .node-form");
+            }
+            else {
+                element_parent = document.querySelector("#\\3" + (node.parent.id - node.parent.id % 100) / 100 + "\\3" + (node.parent.id % 100 - node.parent.id % 10) / 10 + "\\3" + node.parent.id % 10 + " > .node-form");
+            }
+            parent_xy = getCoords(element_parent);
+
+            ECSTreesvg.innerHTML += `<circle cx="${form_xy.left}" cy="${form_xy.top + form_height}" r="5" fill="white"></circle>`;
+            if (node.parent.parent === null) {
+                parent_xy.left -= 20;
+            }
+            ECSTreesvg.innerHTML += `<path d="M${parent_xy.left + form_width},${parent_xy.top + form_height} C${0.4 * (parent_xy.left + form_width) + 0.6 * (form_xy.left)},${parent_xy.top + form_height} ${0.6 * (parent_xy.left + form_width) + 0.4 * (form_xy.left)},${form_xy.top + form_height} ${form_xy.left},${form_xy.top + form_height} " stroke="white" stroke-width="2" fill="rgba(0,0,0,0)"></path>`;
+        } else {
+            form_xy.left -= 20;
+        }
+        ECSTreesvg.innerHTML += `<circle cx="${form_xy.left + form_width}" cy="${form_xy.top + form_height}" r="5" fill="white"></circle>`;
+
+    });
 }
 
 //! END

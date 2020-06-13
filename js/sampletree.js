@@ -102,40 +102,6 @@ buttonAdd(sample_tree);
 
 buttonDel(sample_tree);
 
+pointSvg(sample_tree);
+
 //! END
-
-
-
-
-
-
-
-
-
-
-
-//? -----------------------------------------------------
-
-// let id = 223;
-// let element_form;
-// let element_parent;
-
-// if (id < 10) {
-//     element_form = document.querySelector("#\\3" + id + " > .node-form");
-// }
-// else if (id < 100) {
-//     element_form = document.querySelector("#\\3" + (id - id%10)/10 + "\\3" + id%10 + " > .node-form");
-// }
-// else { 
-//     element_form = document.querySelector("#treebox");
-// }
-
-// console.log(element_form);
-// console.log(getCoords(element_form));
-
-
-
-// console.log(arrIDs(sample_tree).sort((a, b) => (a - b)))
-// console.log(searchId(arrIDs(sample_tree)))
-
-//? -------------------------------------

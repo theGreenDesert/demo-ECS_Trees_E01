@@ -1,6 +1,6 @@
 //! пример создания дерева из 6-ти карточек
 
-var sample_tree = new ECSTree('FirstCard'); // {data: 'FirstCard', parent: null, children: [],
+let sample_tree = new ECSTree('FirstCard'); // {data: 'FirstCard', parent: null, children: [],
 sample_tree._root.tier = 0; // tier: 0,
 sample_tree._root.id = 1; // id: 1}
 
@@ -65,15 +65,15 @@ sample_tree._root.children[0].children[0].children[0].id = 6;
 // }, sample_tree.walkBreadthFirst);
 
 // console.log('добавление новой карточки к определенному узлу дерева');
-sample_tree.add(4, sample_tree.walkBreadthFirst, searchId(arrIDs(sample_tree)), 'seven');
+sample_tree.add(4, sample_tree.walkBreadthFirst, searchPreviousId(arrIDs(sample_tree)), 'seven');
 // console.log(sample_tree);
 
 
 // console.log('удаление узла и всех его дочерних элементов');
-// sample_tree.remove(4, 2, sample_tree.walkBreadthFirst);
+sample_tree.remove(4, 2, sample_tree.walkBreadthFirst);
 // console.log(sample_tree);
 
-// sample_tree.add(1, sample_tree.walkBreadthFirst, searchId(arrIDs(sample_tree))); //todo ----
+// sample_tree.add(1, sample_tree.walkBreadthFirst, searchPreviousId(arrIDs(sample_tree))); //todo ----
 
 //! примеры использования "моих" функций
 
@@ -94,7 +94,7 @@ sample_tree.add(4, sample_tree.walkBreadthFirst, searchId(arrIDs(sample_tree)), 
 
 //! вывод данных на страницу
 
-addTodayData();
+addTodayDate();
 
 createList(sample_tree);
 
@@ -102,6 +102,8 @@ buttonAdd(sample_tree);
 
 buttonDel(sample_tree);
 
-pointSvg(sample_tree);
+buttonEdit(sample_tree);
+
+drawSvg(sample_tree);
 
 //! END

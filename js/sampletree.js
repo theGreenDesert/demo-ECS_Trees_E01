@@ -70,7 +70,7 @@ sample_tree.add(4, sample_tree.walkBreadthFirst, searchPreviousId(arrIDs(sample_
 
 
 // console.log('удаление узла и всех его дочерних элементов');
-sample_tree.remove(4, 2, sample_tree.walkBreadthFirst);
+// sample_tree.remove(4, 2, sample_tree.walkBreadthFirst);
 // console.log(sample_tree);
 
 // sample_tree.add(1, sample_tree.walkBreadthFirst, searchPreviousId(arrIDs(sample_tree))); //todo ----
